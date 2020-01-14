@@ -8,23 +8,6 @@ import {
 export default class EditForm extends Component {
     constructor(props) {
         super(props)
-
-        this.reset = this.reset.bind(this)
-    }
-
-    reset() {
-        this.setState({
-            id: this.props.selectedId,
-            name: this.props.selectedName,
-            born: this.props.selectedBorn,
-            gender: this.props.selectedGender,
-            degree: this.props.selectedDegree,
-            faculty: this.props.selectedFaculty,
-            major: this.props.selectedMajor,
-            semester: this.props.selectedSemester,
-            email: this.props.selectedEmail,
-            phoneNumber: this.props.selectedPhoneNumber
-        })
     }
 
     render() {
@@ -120,7 +103,7 @@ export default class EditForm extends Component {
                             </Form.Group>
                             <Form.Group>
                                 <Form.Label>
-                                    Degree
+                                    Degree:
                                 </Form.Label>
                                 <Form.Control
                                     as="select"
@@ -144,7 +127,7 @@ export default class EditForm extends Component {
                             </Form.Group>
                             <Form.Group>
                                 <Form.Label>
-                                    Faculty
+                                    Faculty:
                                 </Form.Label>
                                 <Form.Control
                                     as="select"
@@ -267,7 +250,7 @@ export default class EditForm extends Component {
                             </Form.Group>
                             <Form.Group>
                                 <Form.Label>
-                                    Phone Number
+                                    Phone Number:
                                 </Form.Label>
                                 <Form.Control
                                     type="text"
@@ -277,14 +260,6 @@ export default class EditForm extends Component {
                                     onChange={e => this.props.handleChange(e)}
                                 />
                             </Form.Group>
-                            <Button
-                                type="button"
-                                variant="warning"
-                                block={true}
-                                onClick={this.reset}
-                            >
-                                Reset
-                            </Button>
                             <Button
                                 type="button"
                                 variant="warning"

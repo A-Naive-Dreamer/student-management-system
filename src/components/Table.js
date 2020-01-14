@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import {
     Table as Table2,
-    Button
+    Button,
+    Form
 } from 'react-bootstrap'
 
 export default class Table extends Component {
@@ -118,23 +119,31 @@ export default class Table extends Component {
                                                 }
                                             </td>
                                             <td>
-                                                <Button
-                                                    type="button"
-                                                    onClick={() => this.props.remove(index)}
-                                                    variant="danger"
-                                                    className="text-white"
-                                                >
-                                                    Delete
+                                                <Form>
+                                                    <Form.Group>
+                                                        <Button
+                                                            type="button"
+                                                            block={true}
+                                                            onClick={() => this.props.remove(index)}
+                                                            variant="danger"
+                                                            className="text-white"
+                                                        >
+                                                            Delete
                                                 </Button>
-                                                <Button
-                                                    type="button"
-                                                    id={`${index}`}
-                                                    onClick={e => this.props.handleToggle(e)}
-                                                    variant="warning"
-                                                    className="text-white"
-                                                >
-                                                    Edit
+                                                    </Form.Group>
+                                                    <Form.Group>
+                                                        <Button
+                                                            type="button"
+                                                            block={true}
+                                                            id={`${index}`}
+                                                            onClick={e => this.props.handleToggle(e)}
+                                                            variant="warning"
+                                                            className="text-white"
+                                                        >
+                                                            Edit
                                                 </Button>
+                                                    </Form.Group>
+                                                </Form>
                                             </td>
                                         </tr>
                                     )

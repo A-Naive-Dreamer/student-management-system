@@ -9,6 +9,7 @@ import {
     Row,
     Col
 } from 'react-bootstrap'
+import Swal from 'sweetalert2'
 
 export default class Main extends Component {
     constructor(props) {
@@ -20,7 +21,6 @@ export default class Main extends Component {
             degree: '',
             faculty: '',
             major: '',
-            semester: 0,
             show: false,
             show2: false,
             index: 0,
@@ -46,23 +46,43 @@ export default class Main extends Component {
     }
 
     updateData() {
-        let students = this.state.students
+        Swal
+            .fire({
+                title: 'Are you sure want want to update student data?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, update student data',
+                cancelButtonText: 'No, keep it like before'
+            })
+            .then((decision) => {
+                if (decision.value) {
+                    let students = this.state.students
 
-        students.splice(this.state.index, 1, {
-            id: this.state.selectedId,
-            name: this.state.selectedName,
-            born: this.state.selectedBorn,
-            gender: this.state.selectedGender,
-            degree: this.state.selectedDegree,
-            faculty: this.state.selectedFaculty,
-            major: this.state.selectedMajor,
-            semester: this.state.selectedSemester,
-            email: this.state.selectedEmail,
-            phoneNumber: this.state.selectedPhoneNumber
-        })
+                    students.splice(this.state.index, 1, {
+                        id: this.state.selectedId,
+                        name: this.state.selectedName,
+                        born: this.state.selectedBorn,
+                        gender: this.state.selectedGender,
+                        degree: this.state.selectedDegree,
+                        faculty: this.state.selectedFaculty,
+                        major: this.state.selectedMajor,
+                        semester: this.state.selectedSemester,
+                        email: this.state.selectedEmail,
+                        phoneNumber: this.state.selectedPhoneNumber
+                    })
 
-        this.refresh(students)
-        this.toggleModal2()
+                    this.refresh(students)
+
+                    Swal
+                        .fire({
+                            title: 'Successfully updated student data',
+                            icon: 'success',
+                        })
+                        .then(result => {
+                            this.toggleModal2()
+                        })
+                }
+            })
     }
 
     handleChange(e) {
@@ -109,11 +129,28 @@ export default class Main extends Component {
     }
 
     remove(x) {
-        let students = this.state.students
+        Swal
+            .fire({
+                title: 'Are you sure want want to delete student data?',
+                icon: 'error',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete student data',
+                cancelButtonText: 'No, keep it'
+            })
+            .then((decision) => {
+                if (decision.value) {
+                    let students = this.state.students
 
-        students.splice(x, 1)
+                    students.splice(x, 1)
 
-        this.refresh(students)
+                    this.refresh(students)
+
+                    Swal.fire({
+                        title: 'Successfully deleted student data',
+                        icon: 'success'
+                    })
+                }
+            })
     }
 
     refresh(students) {
@@ -166,7 +203,6 @@ export default class Main extends Component {
                             degree={this.state.degree}
                             faculty={this.state.faculty}
                             major={this.state.major}
-                            semester={this.state.semester}
                         />
                     </Col>
                 </Row>
@@ -189,7 +225,6 @@ export default class Main extends Component {
                             degree={this.state.degree}
                             faculty={this.state.faculty}
                             major={this.state.major}
-                            semester={this.state.semester}
                             studentName={this.state.studentName}
                             remove={this.remove}
                             handleToggle={this.openModal}
@@ -256,7 +291,7 @@ export default class Main extends Component {
                         />
                     </Col>
                 </Row>
-            </main>
+            </main >
         )
     }
 }

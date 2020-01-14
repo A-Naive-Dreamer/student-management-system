@@ -4,6 +4,7 @@ import {
     Form,
     Button
 } from 'react-bootstrap'
+import Swal from 'sweetalert2'
 
 export default class AddForm extends Component {
     constructor(props) {
@@ -30,24 +31,44 @@ export default class AddForm extends Component {
     }
 
     addStudentData() {
-        let students = this.props.students
+        Swal
+            .fire({
+                title: 'Are you sure want to add new student data?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, Add new student data',
+                cancelButtonText: 'No, do not add new student data'
+            })
+            .then(decision => {
+                if (decision.value) {
+                    let students = this.props.students
 
-        students.push({
-            id: this.state.id,
-            name: this.state.name,
-            born: this.state.born,
-            gender: this.state.gender,
-            degree: this.state.degree,
-            faculty: this.state.faculty,
-            major: this.state.major,
-            semester: parseInt(this.state.semester),
-            email: this.state.email,
-            phoneNumber: this.state.phoneNumber
-        })
+                    students.push({
+                        id: this.state.id,
+                        name: this.state.name,
+                        born: this.state.born,
+                        gender: this.state.gender,
+                        degree: this.state.degree,
+                        faculty: this.state.faculty,
+                        major: this.state.major,
+                        semester: parseInt(this.state.semester),
+                        email: this.state.email,
+                        phoneNumber: this.state.phoneNumber
+                    })
 
-        this.props.handleRefresh(students)
-        this.props.handleToggle()
-        this.reset()
+                    this.props.handleRefresh(students)
+                    this.reset()
+
+                    Swal
+                        .fire({
+                            title: 'Successfully added new student data',
+                            icon: 'success'
+                        })
+                        .then(decision => {
+                            this.props.handleToggle()
+                        })
+                }
+            })
     }
 
     reset() {
@@ -166,7 +187,7 @@ export default class AddForm extends Component {
                             </Form.Group>
                             <Form.Group>
                                 <Form.Label>
-                                    Degree
+                                    Degree:
                                 </Form.Label>
                                 <Form.Control
                                     as="select"
@@ -190,7 +211,7 @@ export default class AddForm extends Component {
                             </Form.Group>
                             <Form.Group>
                                 <Form.Label>
-                                    Faculty
+                                    Faculty:
                                 </Form.Label>
                                 <Form.Control
                                     as="select"
@@ -313,7 +334,7 @@ export default class AddForm extends Component {
                             </Form.Group>
                             <Form.Group>
                                 <Form.Label>
-                                    Phone Number
+                                    Phone Number:
                                 </Form.Label>
                                 <Form.Control
                                     type="text"

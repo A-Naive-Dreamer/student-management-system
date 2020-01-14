@@ -18,7 +18,13 @@ h1 {
   font-family: 'Aladin' !important;
 }
 
-.form-text {
+#filter .form-label, #search .form-label {
   color: #ffffff;
+  display: block;
   font-weight: 900;
+}
+
+.modal-title {
+  font-family: 'Fedora One';
+  text-align: center !important;
 }

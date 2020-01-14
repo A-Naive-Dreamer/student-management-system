@@ -1,9 +1,6 @@
 import React, { Component } from 'react'
 import {
     Form,
-    FormControl,
-    FormText,
-    FormGroup,
     Button
 } from 'react-bootstrap'
 
@@ -14,29 +11,27 @@ export default class Search extends Component {
 
     render() {
         return (
-            <div>
-                <Form>
-                    <FormGroup>
-                        <FormText>
-                            Student Name:
-                        </FormText>
-                        <FormControl
-                            type="text"
-                            value={this.props.studentName}
-                            onChange={e => this.props.handleChange(e)}
-                            name="studentName"
-                            id="studentName"
-                            placeholder="Search..."
-                        />
-                        <Button
-                            variant="success"
-                            block={true}
-                        >
-                            Search
+            <Form id="search">
+                <Form.Group>
+                    <Form.Label>
+                        Student Name:
+                        </Form.Label>
+                    <Form.Control
+                        type="text"
+                        value={this.props.studentName}
+                        onChange={e => this.props.handleChange(e)}
+                        name="studentName"
+                        id="studentName"
+                        placeholder="Search..."
+                    />
+                    <Button
+                        variant="success"
+                        block={true}
+                    >
+                        Search
                         </Button>
-                    </FormGroup>
-                </Form>
-            </div>
+                </Form.Group>
+            </Form>
         )
     }
 }

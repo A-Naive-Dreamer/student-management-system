@@ -1,23 +1,27 @@
 import React, { Component } from 'react'
 import {
     Form,
-    FormGroup,
     Button
 } from 'react-bootstrap'
 
 export default class AddButton extends Component {
+    constructor(props) {
+        super(props)
+    }
+
     render() {
         return (
             <Form>
-                <FormGroup>
+                <Form.Group>
                     <Button
                         type="button"
                         block={true}
                         className="text-white"
+                        onClick={this.props.handleToggle}
                     >
                         Add
                     </Button>
-                </FormGroup>
+                </Form.Group>
             </Form>
         )
     }

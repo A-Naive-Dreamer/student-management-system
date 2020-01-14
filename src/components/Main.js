@@ -2,7 +2,9 @@ import React, { Component } from 'react'
 import Search from './Search'
 import Filter from './Filter'
 import Table from './Table'
+import AddForm from './AddForm'
 import AddButton from './AddButton'
+import EditForm from './EditForm'
 import {
     Row,
     Col
@@ -18,12 +20,49 @@ export default class Main extends Component {
             degree: '',
             faculty: '',
             major: '',
-            semester: 0
+            semester: 0,
+            show: false,
+            show2: false,
+            index: 0,
+            selectedId: '',
+            selectedName: '',
+            selectedBorn: '',
+            selectedGender: 'Male',
+            selectedDegree: '',
+            selectedFaculty: '',
+            selectedMajor: '',
+            selectedSemester: 0,
+            selectedEmail: '',
+            selectedPhoneNumber: ''
         }
 
+        this.toggleModal = this.toggleModal.bind(this)
+        this.toggleModal2 = this.toggleModal2.bind(this)
         this.handleChange = this.handleChange.bind(this)
-        this.delete = this.delete.bind(this)
+        this.remove = this.remove.bind(this)
         this.refresh = this.refresh.bind(this)
+        this.openModal = this.openModal.bind(this)
+        this.updateData = this.updateData.bind(this)
+    }
+
+    updateData() {
+        let students = this.state.students
+
+        students.splice(this.state.index, 1, {
+            id: this.state.selectedId,
+            name: this.state.selectedName,
+            born: this.state.selectedBorn,
+            gender: this.state.selectedGender,
+            degree: this.state.selectedDegree,
+            faculty: this.state.selectedFaculty,
+            major: this.state.selectedMajor,
+            semester: this.state.selectedSemester,
+            email: this.state.selectedEmail,
+            phoneNumber: this.state.selectedPhoneNumber
+        })
+
+        this.refresh(students)
+        this.toggleModal2()
     }
 
     handleChange(e) {
@@ -34,18 +73,55 @@ export default class Main extends Component {
         })
     }
 
-    delete(x) {
-        this.state.students.splice(x, 1)
+    openModal(e) {
+        let index = parseInt(e.target.id)
 
-        this.refresh()
+        this.setState(
+            {
+                index: index,
+                selectedId: this.state.students[index].id,
+                selectedName: this.state.students[index].name,
+                selectedBorn: this.state.students[index].born,
+                selectedGender: this.state.students[index].gender,
+                selectedDegree: this.state.students[index].degree,
+                selectedFaculty: this.state.students[index].faculty,
+                selectedMajor: this.state.students[index].major,
+                selectedSemester: this.state.students[index].semester,
+                selectedEmail: this.state.students[index].email,
+                selectedPhoneNumber: this.state.students[index].phoneNumber
+            },
+            () => {
+                this.toggleModal2()
+            }
+        )
     }
 
-    refresh() {
-        localStorage.setItem('students', this.state.students)
+    toggleModal2() {
+        this.setState({
+            show2: !this.state.show2
+        })
+    }
+
+    toggleModal() {
+        this.setState({
+            show: !this.state.show
+        })
+    }
+
+    remove(x) {
+        let students = this.state.students
+
+        students.splice(x, 1)
+
+        this.refresh(students)
+    }
+
+    refresh(students) {
+        localStorage.setItem('students', JSON.stringify(students))
 
         this.setState({
             students: JSON.parse(localStorage.getItem('students'))
-        });
+        })
     }
 
     render() {
@@ -115,6 +191,8 @@ export default class Main extends Component {
                             major={this.state.major}
                             semester={this.state.semester}
                             studentName={this.state.studentName}
+                            remove={this.remove}
+                            handleToggle={this.openModal}
                         />
                     </Col>
                 </Row>
@@ -133,7 +211,49 @@ export default class Main extends Component {
                             order: 1
                         }}
                     >
-                        <AddButton />
+                        <AddButton
+                            handleToggle={this.toggleModal}
+                        />
+                    </Col>
+                </Row>
+                <Row
+                    noGutters={true}
+                    className="justify-content-center"
+                >
+                    <Col
+                        xs={{
+                            span: 12,
+                            order: 1
+                        }}
+                        md={{
+                            span: 6,
+                            order: 1
+                        }}
+                    >
+                        <AddForm
+                            students={this.state.students}
+                            show={this.state.show}
+                            handleToggle={this.toggleModal}
+                            handleRefresh={this.refresh}
+                        />
+                        <EditForm
+                            selectedId={this.state.selectedId}
+                            selectedName={this.state.selectedName}
+                            selectedBorn={this.state.selectedBorn}
+                            selectedGender={this.state.selectedGender}
+                            selectedDegree={this.state.selectedDegree}
+                            selectedFaculty={this.state.selectedFaculty}
+                            selectedMajor={this.state.selectedMajor}
+                            selectedSemester={this.state.selectedSemester}
+                            selectedEmail={this.state.selectedEmail}
+                            selectedPhoneNumber={this.state.selectedPhoneNumber}
+                            index={this.state.index}
+                            show={this.state.show2}
+                            handleUpdate={this.updateData}
+                            handleChange={this.handleChange}
+                            handleToggle={this.toggleModal2}
+                            handleRefresh={this.refresh}
+                        />
                     </Col>
                 </Row>
             </main>

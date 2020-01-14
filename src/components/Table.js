@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import {
-    Table as Table2
+    Table as Table2,
+    Button
 } from 'react-bootstrap'
 
 export default class Table extends Component {
@@ -57,12 +58,12 @@ export default class Table extends Component {
                     </thead>
                     <tbody>
                         {
-                            this.props.students.map(student => {
+                            this.props.students.map((student, index) => {
                                 if (
                                     student.name.toLowerCase().includes(this.props.studentName.toLowerCase()) &&
                                     student.degree.toLowerCase().includes(this.props.degree.toLowerCase()) &&
                                     student.faculty.toLowerCase().includes(this.props.faculty.toLowerCase()) &&
-                                    student.major.toLowerCase().includes(this.props.major)
+                                    student.major.toLowerCase().includes(this.props.major.toLowerCase())
                                 ) {
                                     return (
                                         <tr>
@@ -117,7 +118,23 @@ export default class Table extends Component {
                                                 }
                                             </td>
                                             <td>
-
+                                                <Button
+                                                    type="button"
+                                                    onClick={() => this.props.remove(index)}
+                                                    variant="danger"
+                                                    className="text-white"
+                                                >
+                                                    Delete
+                                                </Button>
+                                                <Button
+                                                    type="button"
+                                                    id={`${index}`}
+                                                    onClick={e => this.props.handleToggle(e)}
+                                                    variant="warning"
+                                                    className="text-white"
+                                                >
+                                                    Edit
+                                                </Button>
                                             </td>
                                         </tr>
                                     )

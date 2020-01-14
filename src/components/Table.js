@@ -53,7 +53,7 @@ export default class Table extends Component {
                                 Phone Number
                         </th>
                             <th>
-                                Action
+                                Actions
                         </th>
                         </tr>
                     </thead>

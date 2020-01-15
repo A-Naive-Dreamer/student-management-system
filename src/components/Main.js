@@ -30,6 +30,7 @@ export default class Main extends Component {
             selectedId: '',
             selectedName: '',
             selectedBorn: '',
+            selectedPhotoProfile: '',
             selectedGender: 'Male',
             selectedDegree: '',
             selectedFaculty: '',
@@ -48,6 +49,129 @@ export default class Main extends Component {
         this.openModal = this.openModal.bind(this)
         this.openModal2 = this.openModal2.bind(this)
         this.updateData = this.updateData.bind(this)
+        this.editPhotoProfile = this.editPhotoProfile.bind(this)
+        this.switchFaculty = this.switchFaculty.bind(this)
+        this.switchMajor = this.switchMajor.bind(this)
+        this.switchFaculty2 = this.switchFaculty2.bind(this)
+        this.switchMajor2 = this.switchMajor2.bind(this)
+    }
+
+    switchFaculty(e) {
+        this.setState({
+            faculty: e.target.value,
+            major: ''
+        })
+    }
+
+    switchMajor() {
+        switch (this.state.faculty) {
+            case 'Economy':
+                return (
+                    <optgroup label="Economy">
+                        <option value="Accountancy">
+                            Accountancy
+                        </option>
+                        <option value="Economy Development">
+                            Economy Development
+                        </option>
+                        <option value="Auditory">
+                            Auditory
+                        </option>
+                    </optgroup>
+                )
+            case 'Art':
+                return (
+                    <optgroup label="Art">
+                        <option value="Music">
+                            Music
+                        </option>
+                        <option value="Literature">
+                            Literature
+                        </option>
+                        <option value="Drama">
+                            Drama
+                        </option>
+                    </optgroup>
+                )
+            case 'Tech':
+                return (
+                    <optgroup label="Tech">
+                        <option value="Information Technology">
+                            Information Technology
+                        </option>
+                        <option value="Civil Engineering">
+                            Civil Engineering
+                        </option>
+                        <option value="Automotive">
+                            Automotive
+                        </option>
+                    </optgroup>
+                )
+            default:
+                return ''
+        }
+    }
+
+    switchFaculty2(e) {
+        this.setState({
+            selectedFaculty: e.target.value,
+            selectedMajor: ''
+        })
+    }
+
+    switchMajor2() {
+        switch (this.state.selectedFaculty) {
+            case 'Economy':
+                return (
+                    <optgroup label="Economy">
+                        <option value="Accountancy">
+                            Accountancy
+                        </option>
+                        <option value="Economy Development">
+                            Economy Development
+                        </option>
+                        <option value="Auditory">
+                            Auditory
+                        </option>
+                    </optgroup>
+                )
+            case 'Art':
+                return (
+                    <optgroup label="Art">
+                        <option value="Music">
+                            Music
+                        </option>
+                        <option value="Literature">
+                            Literature
+                        </option>
+                        <option value="Drama">
+                            Drama
+                        </option>
+                    </optgroup>
+                )
+            case 'Tech':
+                return (
+                    <optgroup label="Tech">
+                        <option value="Information Technology">
+                            Information Technology
+                        </option>
+                        <option value="Civil Engineering">
+                            Civil Engineering
+                        </option>
+                        <option value="Automotive">
+                            Automotive
+                        </option>
+                    </optgroup>
+                )
+            default:
+                return ''
+        }
+    }
+
+    editPhotoProfile(result) {
+        this.setState({
+            selectedPhotoProfile: result.filesUploaded[0].url
+        })
     }
 
     updateData() {
@@ -134,6 +258,7 @@ export default class Main extends Component {
                         id: this.state.selectedId,
                         name: this.state.selectedName,
                         born: this.state.selectedBorn,
+                        photoProfile: this.state.selectedPhotoProfile,
                         gender: this.state.selectedGender,
                         degree: this.state.selectedDegree,
                         faculty: this.state.selectedFaculty,
@@ -175,6 +300,7 @@ export default class Main extends Component {
                     selectedId: this.state.students[index].id,
                     selectedName: this.state.students[index].name,
                     selectedBorn: this.state.students[index].born,
+                    selectedPhotoProfile: this.state.students[index].photoProfile,
                     selectedGender: this.state.students[index].gender,
                     selectedDegree: this.state.students[index].degree,
                     selectedFaculty: this.state.students[index].faculty,
@@ -192,7 +318,6 @@ export default class Main extends Component {
 
     openModal2(e) {
         let index = parseInt(e.target.id.slice(2))
-        console.log(e.target.id.slice(2))
 
         if (!isNaN(index)) {
             this.setState(
@@ -297,6 +422,8 @@ export default class Main extends Component {
                         className="dark"
                     >
                         <Filter
+                            switchFaculty={this.switchFaculty}
+                            switchMajor={this.switchMajor}
                             handleChange={this.handleChange}
                             degree={this.state.degree}
                             faculty={this.state.faculty}
@@ -346,9 +473,7 @@ export default class Main extends Component {
                             order: 1
                         }}
                     >
-                        <AddButton
-                            handleToggle={this.toggleModal}
-                        />
+                        <AddButton handleToggle={this.toggleModal} />
                     </Col>
                 </Row>
                 <Row
@@ -366,6 +491,8 @@ export default class Main extends Component {
                         }}
                     >
                         <AddForm
+                            switchFaculty={this.switchFaculty}
+                            switchMajor={this.switchMajor}
                             students={this.state.students}
                             show={this.state.show}
                             handleToggle={this.toggleModal}
@@ -375,6 +502,7 @@ export default class Main extends Component {
                             selectedId={this.state.selectedId}
                             selectedName={this.state.selectedName}
                             selectedBorn={this.state.selectedBorn}
+                            selectedPhotoProfile={this.state.selectedPhotoProfile}
                             selectedGender={this.state.selectedGender}
                             selectedDegree={this.state.selectedDegree}
                             selectedFaculty={this.state.selectedFaculty}
@@ -383,10 +511,13 @@ export default class Main extends Component {
                             selectedEmail={this.state.selectedEmail}
                             selectedPhoneNumber={this.state.selectedPhoneNumber}
                             show={this.state.show2}
+                            switchFaculty={this.switchFaculty2}
+                            switchMajor={this.switchMajor2}
                             handleUpdate={this.updateData}
                             handleChange={this.handleChange}
                             handleToggle={this.toggleModal2}
                             handleRefresh={this.refresh}
+                            handleEditPhotoProfile={this.editPhotoProfile}
                         />
                         <View
                             show={this.state.show3}

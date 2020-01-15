@@ -15,6 +15,8 @@ export default class Table extends Component {
     }
 
     render() {
+        let x = 0
+
         return (
             <div id="table">
                 <Table2
@@ -26,6 +28,12 @@ export default class Table extends Component {
                 >
                     <thead>
                         <tr>
+                            <th>
+                                No.
+                            </th>
+                            <th>
+                                Photo Profile
+                            </th>
                             <th>
                                 Student ID
                             </th>
@@ -51,12 +59,23 @@ export default class Table extends Component {
                             this.props.students.map((student, index) => {
                                 if (
                                     student.name.toLowerCase().includes(this.props.studentName.toLowerCase()) &&
-                                    student.degree.toLowerCase().includes(this.props.degree.toLowerCase()) &&
-                                    student.faculty.toLowerCase().includes(this.props.faculty.toLowerCase()) &&
-                                    student.major.toLowerCase().includes(this.props.major.toLowerCase())
+                                    student.degree.includes(this.props.degree) &&
+                                    student.faculty.includes(this.props.faculty) &&
+                                    student.major.includes(this.props.major)
                                 ) {
                                     return (
                                         <tr>
+                                            <td>
+                                                {++x}.
+                                            </td>
+                                            <td>
+                                                <Image
+                                                    thumbnail={true}
+                                                    alt="Photo Profile"
+                                                    src={student.photoProfile}
+                                                    className="photo-profiles-2"
+                                                />
+                                            </td>
                                             <td>
                                                 {
                                                     student.id

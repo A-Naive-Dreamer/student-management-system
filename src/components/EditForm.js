@@ -5,6 +5,7 @@ import {
     Button,
     Image
 } from 'react-bootstrap'
+import ReactFilestack from 'filestack-react'
 import EditIcon from '../assets/images/edit.png'
 
 export default class EditForm extends Component {
@@ -22,18 +23,35 @@ export default class EditForm extends Component {
                     onClick={this.props.handleToggle}
                 >
                     &times;
-                    </Button>
+                </Button>
                 <Modal.Header>
                     <Modal.Title className="text-primary">
                         Edit Student Data of {` ${this.props.selectedName}`}
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
+                    <Image
+                        thumbnail={true}
+                        alt="Photo Profile"
+                        src={this.props.selectedPhotoProfile}
+                        className="photo-profiles"
+                    />
+                    <ReactFilestack
+                        apikey="ABBQtIvFBQcCqLaoeFv30z"
+                        buttonText="Edit Photo Profile"
+                        buttonClass="btn btn-primary btn-block"
+                        options={{
+                            accept: 'image/*',
+                            fromSources: ['local_file_system'],
+                            maxFiles: 1
+                        }}
+                        onSuccess={this.props.handleEditPhotoProfile}
+                    />
                     <Form>
                         <Form.Group>
                             <Form.Label>
                                 Student ID:
-                                </Form.Label>
+                            </Form.Label>
                             <Form.Control
                                 type="text"
                                 name="selectedId"
@@ -45,7 +63,7 @@ export default class EditForm extends Component {
                         <Form.Group>
                             <Form.Label>
                                 Name:
-                                </Form.Label>
+                            </Form.Label>
                             <Form.Control
                                 type="text"
                                 name="selectedName"
@@ -57,7 +75,7 @@ export default class EditForm extends Component {
                         <Form.Group>
                             <Form.Label>
                                 Born:
-                                </Form.Label>
+                            </Form.Label>
                             <Form.Control
                                 type="date"
                                 name="selectedBorn"
@@ -68,7 +86,7 @@ export default class EditForm extends Component {
                         <Form.Group>
                             <Form.Label>
                                 Gender:
-                                </Form.Label>
+                            </Form.Label>
                             <Form.Control
                                 as="select"
                                 name="selectedGender"
@@ -77,32 +95,16 @@ export default class EditForm extends Component {
                             >
                                 <option value="Male">
                                     Male
-                                    </option>
+                                </option>
                                 <option value="Female">
                                     Female
-                                    </option>
+                                </option>
                             </Form.Control>
-                            {/* <Form.Control
-                                    type="radio"
-                                    name="gender"
-                                    value="Male"
-                                    onChange={e => this.handleChange(e)}
-                                    inline={true}
-                                />
-                                <FormLabel for="gender">Male</FormLabel>
-                                <Form.Control
-                                    type="radio"
-                                    name="gender"
-                                    value="Female"
-                                    onChange={e => this.handleChange(e)}
-                                    inline={true}
-                                />
-                                <FormLabel for="gender">Female</FormLabel> */}
                         </Form.Group>
                         <Form.Group>
                             <Form.Label>
                                 Degree:
-                                </Form.Label>
+                            </Form.Label>
                             <Form.Control
                                 as="select"
                                 name="selectedDegree"
@@ -111,46 +113,46 @@ export default class EditForm extends Component {
                             >
                                 <option value="">
                                     None
-                                    </option>
+                                </option>
                                 <option value="Bachelor">
                                     Bachelor
-                                    </option>
+                                </option>
                                 <option value="Master">
                                     Master
-                                    </option>
+                                </option>
                                 <option value="Doctorate">
                                     Doctorate
-                                    </option>
+                                </option>
                             </Form.Control>
                         </Form.Group>
                         <Form.Group>
                             <Form.Label>
                                 Faculty:
-                                </Form.Label>
+                            </Form.Label>
                             <Form.Control
                                 as="select"
                                 name="selectedFaculty"
                                 value={this.props.selectedFaculty}
-                                onChange={e => this.props.handleChange(e)}
+                                onChange={e => this.props.switchFaculty(e)}
                             >
                                 <option value="">
                                     None
-                                    </option>
+                                </option>
                                 <option value="Economy">
                                     Economy
-                                    </option>
+                                </option>
                                 <option value="Art">
                                     Art
-                                    </option>
+                                </option>
                                 <option value="Tech">
                                     Tech
-                                    </option>
+                                </option>
                             </Form.Control>
                         </Form.Group>
                         <Form.Group>
                             <Form.Label>
                                 Major:
-                                </Form.Label>
+                            </Form.Label>
                             <Form.Control
                                 as="select"
                                 name="selectedMajor"
@@ -159,46 +161,16 @@ export default class EditForm extends Component {
                             >
                                 <option value="">
                                     None
-                                    </option>
-                                <optgroup label="Economy">
-                                    <option value="Accountancy">
-                                        Accountancy
-                                        </option>
-                                    <option value="Economy Development">
-                                        Economy Development
-                                        </option>
-                                    <option value="Auditory">
-                                        Auditory
-                                        </option>
-                                </optgroup>
-                                <optgroup label="Art">
-                                    <option value="Music">
-                                        Music
-                                        </option>
-                                    <option value="Literature">
-                                        Literature
-                                        </option>
-                                    <option value="Drama">
-                                        Drama
-                                        </option>
-                                </optgroup>
-                                <optgroup label="Tech">
-                                    <option value="Information Technology">
-                                        Information Technology
-                                        </option>
-                                    <option value="Civil Engineering">
-                                        Civil Engineering
-                                        </option>
-                                    <option value="Automotive">
-                                        Automotive
-                                        </option>
-                                </optgroup>
+                                </option>
+                                {
+                                    this.props.switchMajor()
+                                }
                             </Form.Control>
                         </Form.Group>
                         <Form.Group>
                             <Form.Label>
                                 Semester:
-                                </Form.Label>
+                            </Form.Label>
                             <Form.Control
                                 as="select"
                                 name="selectedSemester"
@@ -210,25 +182,25 @@ export default class EditForm extends Component {
                                 </option>
                                 <option value={1}>
                                     1
-                                    </option>
+                                </option>
                                 <option value={2}>
                                     2
-                                    </option>
+                                </option>
                                 <option value={3}>
                                     3
-                                    </option>
+                                </option>
                                 <option value={4}>
                                     4
-                                    </option>
+                                </option>
                                 <option value={5}>
                                     5
-                                    </option>
+                                </option>
                                 <option value={6}>
                                     6
-                                    </option>
+                                </option>
                                 <option value={7}>
                                     7
-                                    </option>
+                                </option>
                                 <option value={8}>
                                     8
                                 </option>
@@ -237,7 +209,7 @@ export default class EditForm extends Component {
                         <Form.Group>
                             <Form.Label>
                                 Email:
-                                    </Form.Label>
+                            </Form.Label>
                             <Form.Control
                                 type="email"
                                 name="selectedEmail"
@@ -249,7 +221,7 @@ export default class EditForm extends Component {
                         <Form.Group>
                             <Form.Label>
                                 Phone Number:
-                                </Form.Label>
+                            </Form.Label>
                             <Form.Control
                                 type="text"
                                 name="selectedPhoneNumber"

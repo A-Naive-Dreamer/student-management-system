@@ -6,6 +6,7 @@ import {
     Image
 } from 'react-bootstrap'
 import Swal from 'sweetalert2'
+import ReactFilestack from 'filestack-react'
 import AddIcon from '../assets/images/add.png'
 
 export default class AddForm extends Component {
@@ -16,6 +17,7 @@ export default class AddForm extends Component {
             id: '',
             name: '',
             born: '',
+            photoProfile: 'https://cdn.filestackcontent.com/Tuno6S8TmupuFQknXnvV',
             gender: 'Male',
             degree: '',
             faculty: '',
@@ -29,8 +31,71 @@ export default class AddForm extends Component {
         this.handleChange = this.handleChange.bind(this)
         this.reset = this.reset.bind(this)
         this.addStudentData = this.addStudentData.bind(this)
+        this.addPhotoProfile = this.addPhotoProfile.bind(this)
+        this.switchFaculty = this.switchFaculty.bind(this)
+        this.switchMajor = this.switchMajor.bind(this)
+    }
 
-        console.log(this.props.students)
+    switchFaculty(e) {
+        this.setState({
+            faculty: e.target.value,
+            major: ''
+        })
+    }
+
+    switchMajor() {
+        switch (this.state.faculty) {
+            case 'Economy':
+                return (
+                    <optgroup label="Economy">
+                        <option value="Accountancy">
+                            Accountancy
+                        </option>
+                        <option value="Economy Development">
+                            Economy Development
+                        </option>
+                        <option value="Auditory">
+                            Auditory
+                        </option>
+                    </optgroup>
+                )
+            case 'Art':
+                return (
+                    <optgroup label="Art">
+                        <option value="Music">
+                            Music
+                        </option>
+                        <option value="Literature">
+                            Literature
+                        </option>
+                        <option value="Drama">
+                            Drama
+                        </option>
+                    </optgroup>
+                )
+            case 'Tech':
+                return (
+                    <optgroup label="Tech">
+                        <option value="Information Technology">
+                            Information Technology
+                        </option>
+                        <option value="Civil Engineering">
+                            Civil Engineering
+                        </option>
+                        <option value="Automotive">
+                            Automotive
+                        </option>
+                    </optgroup>
+                )
+            default:
+                return ''
+        }
+    }
+
+    addPhotoProfile(result) {
+        this.setState({
+            photoProfile: result.filesUploaded[0].url
+        })
     }
 
     addStudentData() {
@@ -116,6 +181,7 @@ export default class AddForm extends Component {
                     students.push({
                         id: this.state.id,
                         name: this.state.name,
+                        photoProfile: this.state.photoProfile,
                         born: this.state.born,
                         gender: this.state.gender,
                         degree: this.state.degree,
@@ -185,6 +251,22 @@ export default class AddForm extends Component {
                         </Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
+                        <Image
+                            thumbnail={true}
+                            alt="Photo Profile"
+                            src={this.state.photoProfile}
+                            className="photo-profiles"
+                        />
+                        <ReactFilestack
+                            apikey="ABBQtIvFBQcCqLaoeFv30z"
+                            buttonText="Upload Photo Profile"
+                            options={{
+                                accept: 'image/*',
+                                fromSources: ['local_file_system'],
+                                maxFiles: 1
+                            }}
+                            onSuccess={this.addPhotoProfile}
+                        />
                         <Form>
                             <Form.Group>
                                 <Form.Label>
@@ -240,22 +322,6 @@ export default class AddForm extends Component {
                                         Female
                                     </option>
                                 </Form.Control>
-                                {/* <Form.Control
-                                    type="radio"
-                                    name="gender"
-                                    value="Male"
-                                    onChange={e => this.handleChange(e)}
-                                    inline={true}
-                                />
-                                <FormLabel for="gender">Male</FormLabel>
-                                <Form.Control
-                                    type="radio"
-                                    name="gender"
-                                    value="Female"
-                                    onChange={e => this.handleChange(e)}
-                                    inline={true}
-                                />
-                                <FormLabel for="gender">Female</FormLabel> */}
                             </Form.Group>
                             <Form.Group>
                                 <Form.Label>
@@ -289,7 +355,7 @@ export default class AddForm extends Component {
                                     as="select"
                                     name="faculty"
                                     value={this.state.faculty}
-                                    onChange={e => this.handleChange(e)}
+                                    onChange={e => this.switchFaculty(e)}
                                 >
                                     <option value="">
                                         None
@@ -318,39 +384,9 @@ export default class AddForm extends Component {
                                     <option value="">
                                         None
                                     </option>
-                                    <optgroup label="Economy">
-                                        <option value="Accountancy">
-                                            Accountancy
-                                        </option>
-                                        <option value="Economy Development">
-                                            Economy Development
-                                        </option>
-                                        <option value="Auditory">
-                                            Auditory
-                                        </option>
-                                    </optgroup>
-                                    <optgroup label="Art">
-                                        <option value="Music">
-                                            Music
-                                        </option>
-                                        <option value="Literature">
-                                            Literature
-                                        </option>
-                                        <option value="Drama">
-                                            Drama
-                                        </option>
-                                    </optgroup>
-                                    <optgroup label="Tech">
-                                        <option value="Information Technology">
-                                            Information Technology
-                                        </option>
-                                        <option value="Civil Engineering">
-                                            Civil Engineering
-                                        </option>
-                                        <option value="Automotive">
-                                            Automotive
-                                        </option>
-                                    </optgroup>
+                                    {
+                                        this.switchMajor()
+                                    }
                                 </Form.Control>
                             </Form.Group>
                             <Form.Group>

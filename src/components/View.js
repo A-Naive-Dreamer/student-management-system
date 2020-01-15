@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import {
     Modal,
     Button,
-    Table
+    Table,
+    Image
 } from 'react-bootstrap'
 
 export default class View extends Component {
@@ -25,6 +26,12 @@ export default class View extends Component {
                     <Modal.Title className="text-primary">
                         View Student Data of {` ${this.props.student.name}`}
                     </Modal.Title>
+                    <Image
+                        thumbnail={true}
+                        alt="Photo Profile"
+                        src={this.props.student.photoProfile}
+                        className="photo-profiles"
+                    />
                 </Modal.Header>
                 <Modal.Body>
                     <Table>

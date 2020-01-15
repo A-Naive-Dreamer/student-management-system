@@ -36,9 +36,30 @@ h1 {
 
 #root {
   background-image: url(../src/assets/images/background.jpg) !important;
-  background-position: center !important;
+  background-position: center top !important;
 }
 
 .dark {
   background-color: rgba(64, 64, 64, 0.75) !important;
+  box-sizing: border-box !important;
+  padding: 10px !important;
+}
+
+.photo-profiles {
+  display: block;
+  height: auto;
+  margin: 0 auto;
+  width: 250px;
+}
+
+.photo-profiles-2 {
+  display: block;
+  height: auto;
+  margin: 0 auto;
+  width: 70px;
+}
+
+button {
+  display: block;
+  margin: 0 auto;
 }

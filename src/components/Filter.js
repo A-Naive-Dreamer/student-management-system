@@ -22,7 +22,7 @@ export default class Filter extends Component {
                         order: 1
                     }}
                     md={{
-                        span: 3,
+                        span: 4,
                         order: 1
                     }}
                 >
@@ -30,7 +30,7 @@ export default class Filter extends Component {
                         <Form.Group>
                             <Form.Label>
                                 Degree:
-                                </Form.Label>
+                            </Form.Label>
                             <select
                                 name="degree"
                                 value={this.props.degree}

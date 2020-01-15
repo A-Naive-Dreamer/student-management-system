@@ -20,7 +20,8 @@ export default class AddForm extends Component {
             major: '',
             semester: 0,
             email: '',
-            phoneNumber: ''
+            phoneNumber: '',
+            errs: []
         }
 
         this.handleChange = this.handleChange.bind(this)
@@ -41,6 +42,73 @@ export default class AddForm extends Component {
             })
             .then(decision => {
                 if (decision.value) {
+                    let errs = ''
+
+                    if (
+                        this.state.id === '' ||
+                        this.state.name === '' ||
+                        this.state.born === '' ||
+                        this.state.gender === '' ||
+                        this.state.degree === '' ||
+                        this.state.faculty === '' ||
+                        this.state.major === '' ||
+                        this.state.semester === '' ||
+                        this.state.email === '' ||
+                        this.state.phoneNumber === ''
+                    ) {
+                        errs += '<div class="alert alert-danger">' +
+                            '<strong>' +
+                            'All fields must be filled!' +
+                            '</strong>' +
+                            '</div>'
+                    }
+
+                    let regex = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
+
+                    if (!regex.test(this.state.email)) {
+                        errs += '<div class="alert alert-danger">' +
+                            '<strong>' +
+                            'Format email is wrong!' +
+                            '</strong>' +
+                            '</div>'
+                    }
+
+                    let born = new Date(this.state.born)
+
+                    if (born > (Date.now() - (18 * 365 * 24 * 60 * 60 * 1000))) {
+                        errs += '<div class="alert alert-danger">' +
+                            '<strong>' +
+                            'The age of student must be older than 18 years old!' +
+                            '</strong>' +
+                            '</div>'
+                    }
+
+                    if (born > new Date(`${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`)) {
+                        errs += '<div class="alert alert-danger">' +
+                            '<strong>' +
+                            'The date can not be more than today date!' +
+                            '</strong>' +
+                            '</div>'
+                    }
+
+                    if (born < (Date.now() - (25 * 365 * 24 * 60 * 60 * 1000))) {
+                        errs += '<div class="alert alert-danger">' +
+                            '<strong>' +
+                            'The age of student must be younger than 26 years old!' +
+                            '</strong>' +
+                            '</div>'
+                    }
+
+                    if (errs.length > 0) {
+                        Swal
+                            .fire({
+                                html: errs,
+                                icon: 'error'
+                            })
+
+                        return
+                    }
+
                     let students = this.props.students
 
                     students.push({
@@ -96,7 +164,7 @@ export default class AddForm extends Component {
 
     render() {
         return (
-            <div>
+            <>
                 <Modal
                     onExit={this.reset}
                     show={this.props.show}
@@ -149,6 +217,8 @@ export default class AddForm extends Component {
                                     name="born"
                                     value={this.state.born}
                                     onChange={e => this.handleChange(e)}
+                                    min="1970-1-1"
+                                    max={`${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`}
                                 />
                             </Form.Group>
                             <Form.Group>
@@ -363,7 +433,7 @@ export default class AddForm extends Component {
                         </Form>
                     </Modal.Body>
                 </Modal>
-            </div>
+            </>
         )
     }
 }

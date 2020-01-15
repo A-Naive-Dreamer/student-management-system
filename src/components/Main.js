@@ -56,6 +56,73 @@ export default class Main extends Component {
             })
             .then((decision) => {
                 if (decision.value) {
+                    let errs = ''
+
+                    if (
+                        this.state.selectedId === '' ||
+                        this.state.selectedName === '' ||
+                        this.state.selectedBorn === '' ||
+                        this.state.selectedGender === '' ||
+                        this.state.selectedDegree === '' ||
+                        this.state.selectedFaculty === '' ||
+                        this.state.selectedMajor === '' ||
+                        this.state.selectedSemester === '' ||
+                        this.state.selectedEmail === '' ||
+                        this.state.selectedPhoneNumber === ''
+                    ) {
+                        errs += '<div class="alert alert-danger">' +
+                            '<strong>' +
+                            'All fields must be filled!' +
+                            '</strong>' +
+                            '</div>'
+                    }
+
+                    let regex = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
+
+                    if (!regex.test(this.state.selectedEmail)) {
+                        errs += '<div class="alert alert-danger">' +
+                            '<strong>' +
+                            'Format email is wrong!' +
+                            '</strong>' +
+                            '</div>'
+                    }
+
+                    let born = new Date(this.state.selectedBorn)
+
+                    if (born > (Date.now() - (18 * 365 * 24 * 60 * 60 * 1000))) {
+                        errs += '<div class="alert alert-danger">' +
+                            '<strong>' +
+                            'The age of student must be older than 18 years old!' +
+                            '</strong>' +
+                            '</div>'
+                    }
+
+                    if (born > new Date(`${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`)) {
+                        errs += '<div class="alert alert-danger">' +
+                            '<strong>' +
+                            'The date can not be more than today date!' +
+                            '</strong>' +
+                            '</div>'
+                    }
+
+                    if (born < (Date.now() - (25 * 365 * 24 * 60 * 60 * 1000))) {
+                        errs += '<div class="alert alert-danger">' +
+                            '<strong>' +
+                            'The age of student must be younger than 26 years old!' +
+                            '</strong>' +
+                            '</div>'
+                    }
+
+                    if (errs.length > 0) {
+                        Swal
+                            .fire({
+                                html: errs,
+                                icon: 'error'
+                            })
+
+                        return
+                    }
+
                     let students = this.state.students
 
                     students.splice(this.state.index, 1, {

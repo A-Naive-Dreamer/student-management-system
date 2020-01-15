@@ -17,7 +17,7 @@ export default class Main extends Component {
         super(props)
 
         this.state = {
-            students: JSON.parse(localStorage.getItem('students')),
+            students: [],
             selectedStudent: {},
             studentName: '',
             degree: '',
@@ -54,6 +54,12 @@ export default class Main extends Component {
         this.switchMajor = this.switchMajor.bind(this)
         this.switchFaculty2 = this.switchFaculty2.bind(this)
         this.switchMajor2 = this.switchMajor2.bind(this)
+    }
+
+    componentDidMount() {
+        this.setState({
+            students: JSON.parse(localStorage.getItem('students'))
+        })
     }
 
     switchFaculty(e) {
@@ -211,7 +217,37 @@ export default class Main extends Component {
                     if (!regex.test(this.state.selectedEmail)) {
                         errs += '<div class="alert alert-danger">' +
                             '<strong>' +
-                            'Format email is wrong!' +
+                            'Format of email is wrong!' +
+                            '</strong>' +
+                            '</div>'
+                    }
+
+                    regex = /^([A-Z]{1}[a-z]*){1}([\s]{1}[A-Z]{1}[a-z]*)*$/gm
+
+                    if (!regex.test(this.state.selectedName)) {
+                        errs += '<div class="alert alert-danger">' +
+                            '<strong>' +
+                            'Format of name is wrong, name just can contains [a-z], [A-Z], and space!' +
+                            '</strong>' +
+                            '</div>'
+                    }
+
+                    regex = /^[+]{1}[1-9]{1}([0-9]*){2}[\s]{1}[0-9]{3}(([\s]?[-]{1}[\s]?){1}[0-9]{4,}){2}$/gm
+
+                    if (!regex.test(this.state.selectedPhoneNumber)) {
+                        errs += '<div class="alert alert-danger">' +
+                            '<strong>' +
+                            'Format of phone number is wrong (right example: +62 812 - 7885 - 1450)!' +
+                            '</strong>' +
+                            '</div>'
+                    }
+
+                    regex = /^[0-9]{1,3}([.]{1}[0-9]{1,3}){2}$/gm
+
+                    if (!regex.test(this.state.selectedId)) {
+                        errs += '<div class="alert alert-danger">' +
+                            '<strong>' +
+                            'Format of Student ID is wrong (right example: 198.127.123)!' +
                             '</strong>' +
                             '</div>'
                     }

@@ -17,7 +17,7 @@ export default class Search extends Component {
                 <Form.Group>
                     <Form.Label>
                         Student Name:
-                        </Form.Label>
+                    </Form.Label>
                     <Form.Control
                         type="text"
                         value={this.props.studentName}

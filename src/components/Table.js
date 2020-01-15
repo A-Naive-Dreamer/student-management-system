@@ -7,6 +7,7 @@ import {
 } from 'react-bootstrap'
 import EditIcon from '../assets/images/edit.png'
 import RemoveIcon from '../assets/images/bin.png'
+import EyeIcon from '../assets/images/eye.png'
 
 export default class Table extends Component {
     constructor(props) {
@@ -27,37 +28,22 @@ export default class Table extends Component {
                         <tr>
                             <th>
                                 Student ID
-                        </th>
+                            </th>
                             <th>
                                 Name
-                        </th>
-                            <th>
-                                Born
-                        </th>
-                            <th>
-                                Gender
-                        </th>
+                            </th>
                             <th>
                                 Degree
-                        </th>
+                            </th>
                             <th>
                                 Faculty
-                        </th>
+                            </th>
                             <th>
                                 Major
-                        </th>
-                            <th>
-                                Semester
-                        </th>
-                            <th>
-                                Email
-                        </th>
-                            <th>
-                                Phone Number
-                        </th>
+                            </th>
                             <th>
                                 Actions
-                        </th>
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -83,16 +69,6 @@ export default class Table extends Component {
                                             </td>
                                             <td>
                                                 {
-                                                    student.born
-                                                }
-                                            </td>
-                                            <td>
-                                                {
-                                                    student.gender
-                                                }
-                                            </td>
-                                            <td>
-                                                {
                                                     student.degree
                                                 }
                                             </td>
@@ -104,21 +80,6 @@ export default class Table extends Component {
                                             <td>
                                                 {
                                                     student.major
-                                                }
-                                            </td>
-                                            <td>
-                                                {
-                                                    student.semester
-                                                }
-                                            </td>
-                                            <td>
-                                                {
-                                                    student.email
-                                                }
-                                            </td>
-                                            <td>
-                                                {
-                                                    student.phoneNumber
                                                 }
                                             </td>
                                             <td>
@@ -151,6 +112,23 @@ export default class Table extends Component {
                                                             <Image
                                                                 src={EditIcon}
                                                                 alt="Edit"
+                                                                width="25"
+                                                                height="25"
+                                                            />
+                                                        </Button>
+                                                    </Form.Group>
+                                                    <Form.Group>
+                                                        <Button
+                                                            type="button"
+                                                            block={true}
+                                                            id={`1-${index}`}
+                                                            onClick={e => this.props.handleToggle2(e)}
+                                                            variant="info"
+                                                            className="text-white"
+                                                        >
+                                                            <Image
+                                                                src={EyeIcon}
+                                                                alt="View"
                                                                 width="25"
                                                                 height="25"
                                                             />

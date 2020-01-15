@@ -5,6 +5,7 @@ import Table from './Table'
 import AddForm from './AddForm'
 import AddButton from './AddButton'
 import EditForm from './EditForm'
+import View from './View'
 import {
     Row,
     Col
@@ -17,12 +18,14 @@ export default class Main extends Component {
 
         this.state = {
             students: JSON.parse(localStorage.getItem('students')),
+            selectedStudent: {},
             studentName: '',
             degree: '',
             faculty: '',
             major: '',
             show: false,
             show2: false,
+            show3: false,
             index: 0,
             selectedId: '',
             selectedName: '',
@@ -38,10 +41,12 @@ export default class Main extends Component {
 
         this.toggleModal = this.toggleModal.bind(this)
         this.toggleModal2 = this.toggleModal2.bind(this)
+        this.toggleModal3 = this.toggleModal3.bind(this)
         this.handleChange = this.handleChange.bind(this)
         this.remove = this.remove.bind(this)
         this.refresh = this.refresh.bind(this)
         this.openModal = this.openModal.bind(this)
+        this.openModal2 = this.openModal2.bind(this)
         this.updateData = this.updateData.bind(this)
     }
 
@@ -164,7 +169,6 @@ export default class Main extends Component {
         let index = parseInt(e.target.id)
 
         if (!isNaN(index)) {
-
             this.setState(
                 {
                     index: index,
@@ -186,9 +190,31 @@ export default class Main extends Component {
         }
     }
 
+    openModal2(e) {
+        let index = parseInt(e.target.id.slice(2))
+        console.log(e.target.id.slice(2))
+
+        if (!isNaN(index)) {
+            this.setState(
+                {
+                    selectedStudent: this.state.students[index]
+                },
+                () => {
+                    this.toggleModal3()
+                }
+            )
+        }
+    }
+
     toggleModal2() {
         this.setState({
             show2: !this.state.show2
+        })
+    }
+
+    toggleModal3() {
+        this.setState({
+            show3: !this.state.show3
         })
     }
 
@@ -301,6 +327,7 @@ export default class Main extends Component {
                             studentName={this.state.studentName}
                             remove={this.remove}
                             handleToggle={this.openModal}
+                            handleToggle2={this.openModal2}
                         />
                     </Col>
                 </Row>
@@ -360,6 +387,11 @@ export default class Main extends Component {
                             handleChange={this.handleChange}
                             handleToggle={this.toggleModal2}
                             handleRefresh={this.refresh}
+                        />
+                        <View
+                            show={this.state.show3}
+                            student={this.state.selectedStudent}
+                            handleToggle={this.toggleModal3}
                         />
                     </Col>
                 </Row>

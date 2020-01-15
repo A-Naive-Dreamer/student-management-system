@@ -163,24 +163,27 @@ export default class Main extends Component {
     openModal(e) {
         let index = parseInt(e.target.id)
 
-        this.setState(
-            {
-                index: index,
-                selectedId: this.state.students[index].id,
-                selectedName: this.state.students[index].name,
-                selectedBorn: this.state.students[index].born,
-                selectedGender: this.state.students[index].gender,
-                selectedDegree: this.state.students[index].degree,
-                selectedFaculty: this.state.students[index].faculty,
-                selectedMajor: this.state.students[index].major,
-                selectedSemester: this.state.students[index].semester,
-                selectedEmail: this.state.students[index].email,
-                selectedPhoneNumber: this.state.students[index].phoneNumber
-            },
-            () => {
-                this.toggleModal2()
-            }
-        )
+        if (!isNaN(index)) {
+
+            this.setState(
+                {
+                    index: index,
+                    selectedId: this.state.students[index].id,
+                    selectedName: this.state.students[index].name,
+                    selectedBorn: this.state.students[index].born,
+                    selectedGender: this.state.students[index].gender,
+                    selectedDegree: this.state.students[index].degree,
+                    selectedFaculty: this.state.students[index].faculty,
+                    selectedMajor: this.state.students[index].major,
+                    selectedSemester: this.state.students[index].semester,
+                    selectedEmail: this.state.students[index].email,
+                    selectedPhoneNumber: this.state.students[index].phoneNumber
+                },
+                () => {
+                    this.toggleModal2()
+                }
+            )
+        }
     }
 
     toggleModal2() {
@@ -244,6 +247,7 @@ export default class Main extends Component {
                             span: 6,
                             order: 1
                         }}
+                        className="dark"
                     >
                         <Search
                             handleChange={this.handleChange}
@@ -264,6 +268,7 @@ export default class Main extends Component {
                             span: 6,
                             order: 1
                         }}
+                        className="dark"
                     >
                         <Filter
                             handleChange={this.handleChange}
@@ -286,6 +291,7 @@ export default class Main extends Component {
                             span: 6,
                             order: 1
                         }}
+                        className="dark"
                     >
                         <Table
                             students={this.state.students}
@@ -349,7 +355,6 @@ export default class Main extends Component {
                             selectedSemester={this.state.selectedSemester}
                             selectedEmail={this.state.selectedEmail}
                             selectedPhoneNumber={this.state.selectedPhoneNumber}
-                            index={this.state.index}
                             show={this.state.show2}
                             handleUpdate={this.updateData}
                             handleChange={this.handleChange}

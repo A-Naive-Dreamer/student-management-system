@@ -2,8 +2,11 @@ import React, { Component } from 'react'
 import {
     Table as Table2,
     Button,
-    Form
+    Form,
+    Image
 } from 'react-bootstrap'
+import EditIcon from '../assets/images/edit.png'
+import RemoveIcon from '../assets/images/bin.png'
 
 export default class Table extends Component {
     constructor(props) {
@@ -128,20 +131,30 @@ export default class Table extends Component {
                                                             variant="danger"
                                                             className="text-white"
                                                         >
-                                                            Delete
-                                                </Button>
+                                                            <Image
+                                                                src={RemoveIcon}
+                                                                alt="Remove"
+                                                                height="25"
+                                                                width="25"
+                                                            />
+                                                        </Button>
                                                     </Form.Group>
                                                     <Form.Group>
                                                         <Button
                                                             type="button"
                                                             block={true}
-                                                            id={`${index}`}
+                                                            id={index}
                                                             onClick={e => this.props.handleToggle(e)}
                                                             variant="warning"
                                                             className="text-white"
                                                         >
-                                                            Edit
-                                                </Button>
+                                                            <Image
+                                                                src={EditIcon}
+                                                                alt="Edit"
+                                                                width="25"
+                                                                height="25"
+                                                            />
+                                                        </Button>
                                                     </Form.Group>
                                                 </Form>
                                             </td>

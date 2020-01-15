@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
 import {
     Form,
-    Button
+    Button,
+    Image
 } from 'react-bootstrap'
+import AddIcon from '../assets/images/add.png'
 
 export default class AddButton extends Component {
     constructor(props) {
@@ -19,7 +21,12 @@ export default class AddButton extends Component {
                         className="text-white"
                         onClick={this.props.handleToggle}
                     >
-                        Add
+                        <Image
+                            src={AddIcon}
+                            alt="Add"
+                            width="25"
+                            height="25"
+                        />
                     </Button>
                 </Form.Group>
             </Form>

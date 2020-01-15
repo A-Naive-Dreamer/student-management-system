@@ -25,6 +25,20 @@ h1 {
 }
 
 .modal-title {
-  font-family: 'Fedora One';
+  font-family: 'Courgette';
   text-align: center !important;
+}
+
+.icons {
+  height: 10px !important;
+  width: 10px !important;
+}
+
+#root {
+  background-image: url(../src/assets/images/background.jpg) !important;
+  background-position: center !important;
+}
+
+.dark {
+  background-color: rgba(64, 64, 64, 0.75) !important;
 }

@@ -2,9 +2,11 @@ import React, { Component } from 'react'
 import {
     Modal,
     Form,
-    Button
+    Button,
+    Image
 } from 'react-bootstrap'
 import Swal from 'sweetalert2'
+import AddIcon from '../assets/images/add.png'
 
 export default class AddForm extends Component {
     constructor(props) {
@@ -141,7 +143,7 @@ export default class AddForm extends Component {
 
     reset() {
         this.setState({
-            id: 0,
+            id: '',
             name: '',
             born: '',
             gender: 'Male',
@@ -175,7 +177,7 @@ export default class AddForm extends Component {
                         type="button"
                         onClick={this.props.handleToggle}
                     >
-                        Close
+                        &times;
                     </Button>
                     <Modal.Header>
                         <Modal.Title className="text-primary">
@@ -419,6 +421,7 @@ export default class AddForm extends Component {
                                 variant="warning"
                                 block={true}
                                 onClick={this.reset}
+                                className="text-white"
                             >
                                 Reset
                             </Button>
@@ -428,7 +431,12 @@ export default class AddForm extends Component {
                                 block={true}
                                 onClick={this.addStudentData}
                             >
-                                Add
+                                <Image
+                                    src={AddIcon}
+                                    alt="Add"
+                                    width="25"
+                                    height="25"
+                                />
                             </Button>
                         </Form>
                     </Modal.Body>

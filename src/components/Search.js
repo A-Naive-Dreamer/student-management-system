@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
 import {
     Form,
-    Button
+    Button,
+    Image
 } from 'react-bootstrap'
+import SearchIcon from '../assets/images/search.png'
 
 export default class Search extends Component {
     constructor(props) {
@@ -28,8 +30,14 @@ export default class Search extends Component {
                         variant="success"
                         block={true}
                     >
-                        Search
-                        </Button>
+                        <Image
+                            src={SearchIcon}
+                            alt="Search"
+                            class="icons"
+                            width="30"
+                            height="30"
+                        />
+                    </Button>
                 </Form.Group>
             </Form>
         )

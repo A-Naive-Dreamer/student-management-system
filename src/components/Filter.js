@@ -6,10 +6,6 @@ import {
 } from 'react-bootstrap'
 
 export default class Filter extends Component {
-    constructor(props) {
-        super(props)
-    }
-
     render() {
         return (
             <Row

@@ -10,10 +10,6 @@ import RemoveIcon from '../assets/images/bin.png'
 import EyeIcon from '../assets/images/eye.png'
 
 export default class Table extends Component {
-    constructor(props) {
-        super(props)
-    }
-
     render() {
         let x = 0
 
@@ -64,15 +60,15 @@ export default class Table extends Component {
                                     student.major.includes(this.props.major)
                                 ) {
                                     return (
-                                        <tr>
+                                        <tr key={++x}>
                                             <td>
-                                                {++x}.
+                                                {x}.
                                             </td>
                                             <td>
                                                 <Image
                                                     thumbnail={true}
                                                     alt="Photo Profile"
-                                                    src={student.photoProfile}
+                                                    src={student.photoProfile.url}
                                                     className="photo-profiles-2"
                                                 />
                                             </td>
@@ -158,6 +154,8 @@ export default class Table extends Component {
                                         </tr>
                                     )
                                 }
+
+                                return ''
                             })
                         }
                     </tbody>

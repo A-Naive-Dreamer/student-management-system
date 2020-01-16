@@ -9,10 +9,6 @@ import ReactFilestack from 'filestack-react'
 import EditIcon from '../assets/images/edit.png'
 
 export default class EditForm extends Component {
-    constructor(props) {
-        super(props)
-    }
-
     render() {
         return (
             <Modal show={this.props.show}>
@@ -33,7 +29,7 @@ export default class EditForm extends Component {
                     <Image
                         thumbnail={true}
                         alt="Photo Profile"
-                        src={this.props.selectedPhotoProfile}
+                        src={this.props.selectedPhotoProfile.url}
                         className="photo-profiles"
                     />
                     <ReactFilestack
@@ -57,7 +53,7 @@ export default class EditForm extends Component {
                                 name="selectedId"
                                 placeholder="Student ID"
                                 value={this.props.selectedId}
-                                onChange={e => this.props.handleChange(e)}
+                                disabled="disabled"
                             />
                         </Form.Group>
                         <Form.Group>

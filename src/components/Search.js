@@ -7,10 +7,6 @@ import {
 import SearchIcon from '../assets/images/search.png'
 
 export default class Search extends Component {
-    constructor(props) {
-        super(props)
-    }
-
     render() {
         return (
             <Form id="search">
@@ -33,7 +29,7 @@ export default class Search extends Component {
                         <Image
                             src={SearchIcon}
                             alt="Search"
-                            class="icons"
+                            className="icons"
                             width="30"
                             height="30"
                         />

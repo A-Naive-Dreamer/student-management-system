@@ -17,7 +17,8 @@ export default class Main extends Component {
         super(props)
 
         this.state = {
-            students: [],
+            students: JSON.parse(localStorage.getItem('students')) || [],
+            studentIds: JSON.parse(localStorage.getItem('studentIds')) || [],
             selectedStudent: {},
             studentName: '',
             degree: '',
@@ -30,12 +31,15 @@ export default class Main extends Component {
             selectedId: '',
             selectedName: '',
             selectedBorn: '',
-            selectedPhotoProfile: '',
+            selectedPhotoProfile: {
+                url: 'https://cdn.filestackcontent.com/6m7AHLTn6r9kavYRF17g',
+                mimeType: 'image/png'
+            },
             selectedGender: 'Male',
             selectedDegree: '',
             selectedFaculty: '',
             selectedMajor: '',
-            selectedSemester: 0,
+            selectedSemester: '0',
             selectedEmail: '',
             selectedPhoneNumber: ''
         }
@@ -54,12 +58,6 @@ export default class Main extends Component {
         this.switchMajor = this.switchMajor.bind(this)
         this.switchFaculty2 = this.switchFaculty2.bind(this)
         this.switchMajor2 = this.switchMajor2.bind(this)
-    }
-
-    componentDidMount() {
-        this.setState({
-            students: JSON.parse(localStorage.getItem('students'))
-        })
     }
 
     switchFaculty(e) {
@@ -176,7 +174,10 @@ export default class Main extends Component {
 
     editPhotoProfile(result) {
         this.setState({
-            selectedPhotoProfile: result.filesUploaded[0].url
+            selectedPhotoProfile: {
+                url: result.filesUploaded[0].url,
+                mimeType: result.filesUploaded[0].mimetype.toLowerCase()
+            }
         })
     }
 
@@ -201,7 +202,7 @@ export default class Main extends Component {
                         this.state.selectedDegree === '' ||
                         this.state.selectedFaculty === '' ||
                         this.state.selectedMajor === '' ||
-                        this.state.selectedSemester === '' ||
+                        this.state.selectedSemester === '0' ||
                         this.state.selectedEmail === '' ||
                         this.state.selectedPhoneNumber === ''
                     ) {
@@ -212,7 +213,7 @@ export default class Main extends Component {
                             '</div>'
                     }
 
-                    let regex = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
+                    let regex = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i
 
                     if (!regex.test(this.state.selectedEmail)) {
                         errs += '<div class="alert alert-danger">' +
@@ -238,16 +239,6 @@ export default class Main extends Component {
                         errs += '<div class="alert alert-danger">' +
                             '<strong>' +
                             'Format of phone number is wrong (right example: +62 812 - 7885 - 1450)!' +
-                            '</strong>' +
-                            '</div>'
-                    }
-
-                    regex = /^[0-9]{1,3}([.]{1}[0-9]{1,3}){2}$/gm
-
-                    if (!regex.test(this.state.selectedId)) {
-                        errs += '<div class="alert alert-danger">' +
-                            '<strong>' +
-                            'Format of Student ID is wrong (right example: 198.127.123)!' +
                             '</strong>' +
                             '</div>'
                     }
@@ -278,6 +269,20 @@ export default class Main extends Component {
                             '</div>'
                     }
 
+                    if (
+                        !(
+                            this.state.selectedPhotoProfile.mimeType === 'image/jpg' ||
+                            this.state.selectedPhotoProfile.mimeType === 'image/jpeg' ||
+                            this.state.selectedPhotoProfile.mimeType === 'image/png'
+                        )
+                    ) {
+                        errs += '<div class="alert alert-danger">' +
+                            '<strong>' +
+                            'File type allowed are image/jpg, image/jpeg, and image/png!' +
+                            '</strong>' +
+                            '</div>'
+                    }
+
                     if (errs.length > 0) {
                         Swal
                             .fire({
@@ -290,19 +295,23 @@ export default class Main extends Component {
 
                     let students = this.state.students
 
-                    students.splice(this.state.index, 1, {
-                        id: this.state.selectedId,
-                        name: this.state.selectedName,
-                        born: this.state.selectedBorn,
-                        photoProfile: this.state.selectedPhotoProfile,
-                        gender: this.state.selectedGender,
-                        degree: this.state.selectedDegree,
-                        faculty: this.state.selectedFaculty,
-                        major: this.state.selectedMajor,
-                        semester: this.state.selectedSemester,
-                        email: this.state.selectedEmail,
-                        phoneNumber: this.state.selectedPhoneNumber
-                    })
+                    students.splice(
+                        this.state.index,
+                        1,
+                        {
+                            id: this.state.selectedId,
+                            name: this.state.selectedName,
+                            born: this.state.selectedBorn,
+                            photoProfile: this.state.selectedPhotoProfile,
+                            gender: this.state.selectedGender,
+                            degree: this.state.selectedDegree,
+                            faculty: this.state.selectedFaculty,
+                            major: this.state.selectedMajor,
+                            semester: this.state.selectedSemester,
+                            email: this.state.selectedEmail,
+                            phoneNumber: this.state.selectedPhoneNumber
+                        }
+                    )
 
                     this.refresh(students)
 
@@ -396,11 +405,13 @@ export default class Main extends Component {
             })
             .then((decision) => {
                 if (decision.value) {
-                    let students = this.state.students
+                    let students = this.state.students,
+                        studentIds = this.state.studentIds
 
                     students.splice(x, 1)
+                    studentIds.splice(x, 1)
 
-                    this.refresh(students)
+                    this.refresh(students, studentIds)
 
                     Swal.fire({
                         title: 'Successfully deleted student data',
@@ -410,12 +421,16 @@ export default class Main extends Component {
             })
     }
 
-    refresh(students) {
+    refresh(students, studentIds) {
         localStorage.setItem('students', JSON.stringify(students))
 
         this.setState({
             students: JSON.parse(localStorage.getItem('students'))
         })
+
+        if (studentIds) {
+            localStorage.setItem('studentIds', JSON.stringify(studentIds))
+        }
     }
 
     render() {
@@ -530,6 +545,7 @@ export default class Main extends Component {
                             switchFaculty={this.switchFaculty}
                             switchMajor={this.switchMajor}
                             students={this.state.students}
+                            studentIds={this.state.studentIds}
                             show={this.state.show}
                             handleToggle={this.toggleModal}
                             handleRefresh={this.refresh}

@@ -7,10 +7,6 @@ import {
 import AddIcon from '../assets/images/add.png'
 
 export default class AddButton extends Component {
-    constructor(props) {
-        super(props)
-    }
-
     render() {
         return (
             <Form>

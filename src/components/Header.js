@@ -23,7 +23,7 @@ export default class Header extends Component {
                     className="dark"
                 >
                     <header>
-                        <h1 class="text-primary text-center">
+                        <h1 className="text-primary text-center">
                             STUDENT MANAGEMENT SYSTEM
                         </h1>
                     </header>

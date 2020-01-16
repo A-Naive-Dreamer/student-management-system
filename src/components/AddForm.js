@@ -17,14 +17,18 @@ export default class AddForm extends Component {
             id: '',
             name: '',
             born: '',
-            photoProfile: 'https://cdn.filestackcontent.com/Tuno6S8TmupuFQknXnvV',
+            photoProfile: {
+                url: 'https://cdn.filestackcontent.com/6m7AHLTn6r9kavYRF17g',
+                mimeType: 'image/png'
+            },
             gender: 'Male',
             degree: '',
             faculty: '',
             major: '',
-            semester: 0,
+            semester: '0',
             email: '',
-            phoneNumber: ''
+            phoneNumber: '',
+            studentIds: JSON.parse(localStorage.getItem('studentIds')) || []
         }
 
         this.handleChange = this.handleChange.bind(this)
@@ -93,7 +97,10 @@ export default class AddForm extends Component {
 
     addPhotoProfile(result) {
         this.setState({
-            photoProfile: result.filesUploaded[0].url
+            photoProfile: {
+                url: result.filesUploaded[0].url,
+                mimeType: result.filesUploaded[0].mimetype.toLowerCase()
+            }
         })
     }
 
@@ -118,7 +125,7 @@ export default class AddForm extends Component {
                         this.state.degree === '' ||
                         this.state.faculty === '' ||
                         this.state.major === '' ||
-                        this.state.semester === '' ||
+                        this.state.semester === '0' ||
                         this.state.email === '' ||
                         this.state.phoneNumber === ''
                     ) {
@@ -129,7 +136,7 @@ export default class AddForm extends Component {
                             '</div>'
                     }
 
-                    let regex = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
+                    let regex = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i
 
                     if (!regex.test(this.state.email)) {
                         errs += '<div class="alert alert-danger">' +
@@ -195,6 +202,32 @@ export default class AddForm extends Component {
                             '</div>'
                     }
 
+                    let studentIdIndex = this.props.studentIds.findIndex(studentId => {
+                        return studentId === this.state.id
+                    })
+
+                    if (studentIdIndex > -1) {
+                        errs += '<div class="alert alert-danger">' +
+                            '<strong>' +
+                            'The ID have been used!' +
+                            '</strong>' +
+                            '</div>'
+                    }
+
+                    if (
+                        !(
+                            this.state.photoProfile.mimeType === 'image/jpg' ||
+                            this.state.photoProfile.mimeType === 'image/jpeg' ||
+                            this.state.photoProfile.mimeType === 'image/png'
+                        )
+                    ) {
+                        errs += '<div class="alert alert-danger">' +
+                            '<strong>' +
+                            'File type allowed are image/jpg, image/jpeg, and image/png!' +
+                            '</strong>' +
+                            '</div>'
+                    }
+
                     if (errs.length > 0) {
                         Swal
                             .fire({
@@ -205,7 +238,8 @@ export default class AddForm extends Component {
                         return
                     }
 
-                    let students = this.props.students
+                    let students = this.props.students,
+                        studentIds = this.props.studentIds
 
                     students.push({
                         id: this.state.id,
@@ -216,12 +250,14 @@ export default class AddForm extends Component {
                         degree: this.state.degree,
                         faculty: this.state.faculty,
                         major: this.state.major,
-                        semester: parseInt(this.state.semester),
+                        semester: this.state.semester,
                         email: this.state.email,
-                        phoneNumber: this.state.phoneNumber
+                        phoneNumber: this.state.phoneNumber,
                     })
 
-                    this.props.handleRefresh(students)
+                    studentIds.push(this.state.id)
+
+                    this.props.handleRefresh(students, studentIds)
                     this.reset()
 
                     Swal
@@ -239,13 +275,17 @@ export default class AddForm extends Component {
     reset() {
         this.setState({
             id: '',
+            photoProfile: {
+                url: 'https://cdn.filestackcontent.com/6m7AHLTn6r9kavYRF17g',
+                mimeType: 'image/png'
+            },
             name: '',
             born: '',
             gender: 'Male',
             degree: '',
             faculty: '',
             major: '',
-            semester: 0,
+            semester: '0',
             email: '',
             phoneNumber: ''
         })
@@ -283,7 +323,7 @@ export default class AddForm extends Component {
                         <Image
                             thumbnail={true}
                             alt="Photo Profile"
-                            src={this.state.photoProfile}
+                            src={this.state.photoProfile.url}
                             className="photo-profiles"
                         />
                         <ReactFilestack
@@ -428,31 +468,31 @@ export default class AddForm extends Component {
                                     value={this.state.semester}
                                     onChange={e => this.handleChange(e)}
                                 >
-                                    <option value={0}>
+                                    <option value='0'>
                                         None
                                     </option>
-                                    <option value={1}>
+                                    <option value='1'>
                                         1
                                     </option>
-                                    <option value={2}>
+                                    <option value='2'>
                                         2
                                     </option>
-                                    <option value={3}>
+                                    <option value='3'>
                                         3
                                     </option>
-                                    <option value={4}>
+                                    <option value='4'>
                                         4
                                     </option>
-                                    <option value={5}>
+                                    <option value='5'>
                                         5
                                     </option>
-                                    <option value={6}>
+                                    <option value='6'>
                                         6
                                     </option>
-                                    <option value={7}>
+                                    <option value='7'>
                                         7
                                     </option>
-                                    <option value={8}>
+                                    <option value='8'>
                                         8
                                     </option>
                                 </Form.Control>
